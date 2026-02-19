@@ -1,6 +1,11 @@
-.global _start
+.data
+hello: .asciz "Hello world!"
 
-_start:
-	addi a7, zero, 93
-	addi a0, zero, 13
+.text
+main:
+	la a0, hello
+	addi a7, zero, 4
+	ecall
+
+	addi a7, zero, 10
 	ecall
