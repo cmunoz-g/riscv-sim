@@ -101,9 +101,11 @@ Instruction decode_b_type(uint32_t inst_raw, Opcode opc) {
     Instruction ins;
     ins.opcode = opc;
     
-    uint32_t lower_imm = extract_bits(inst_raw, 12, 8);
-    uint32_t upper_imm = extract_bits(inst_raw, 31, 25);
-    ins.imm = sign_extend(append_bits(lower_imm, upper_imm, 4), 10); // TODO: fix sign bit
+    uint32_t bits_1_to_4_imm = extract_bits(inst_raw, 12, 8);
+    uint32_t bits_5_to_10_imm = extract_bits(inst_raw, 31, 25);
+    uint32_t bits_11_12_imm = (inst_raw >> 7) | (inst_raw >> 31);
+    uint32_t bits_1_to_10_imm = append_bits(bits_1_to_4_imm, bits_5_to_10_imm, 4);
+    ins.imm = sign_extend(append_bits(bits_1_to_10_imm, bits_11_12_imm, 10), 12);
 
     ins.funct3 = extract_bits(inst_raw, 15, 12);
     ins.rs1 = extract_bits(inst_raw, 20, 15);
@@ -124,8 +126,9 @@ Instruction decode_j_type(uint32_t inst_raw, Opcode opc) {
     ins.opcode = opc;
     ins.rd = extract_bits(inst_raw, 12, 7);
     
-    uint32_t lower_imm = extract_bits(inst_raw, 31, 21);
-    uint32_t upper_imm = extract_bits(inst_raw, 20, 12);
-    ins.imm = sign_extend(append_bits(lower_imm, upper_imm, 10), 10); // TODO: fix sign bit
+    uint32_t bits_1_to_11_imm = extract_bits(inst_raw, 31, 21) | (inst_raw >> 10);
+    uint32_t bits_12_to_20_imm = extract_bits(inst_raw, 20, 12) | (inst_raw >> 23);
 
+    ins.imm = sign_extend(append_bits(bits_1_to_11_imm, bits_12_to_20_imm, 10), 20);
+    return ins;
 }
