@@ -1,7 +1,9 @@
 #pragma once
 #include <cstdint>
+#include <unordered_map>
 
-enum class Opcode {
+enum class Opcode
+{
     LUI = 0b0110111,
     AUIPC = 0b0010111,
     JAL = 0b1101111,
@@ -16,7 +18,8 @@ enum class Opcode {
     INVALID = 0b0000000
 };
 
-struct Instruction {
+struct Instruction
+{
     Opcode opcode;
     uint8_t rd;
     uint8_t funct3;
@@ -24,6 +27,17 @@ struct Instruction {
     uint8_t rs1;
     uint8_t rs2;
     int32_t imm;
+};
+
+using decode_funct = Instruction (*)(uint32_t, Opcode);
+
+static const std::unordered_map<char, decode_funct> decodeFuncts = {
+    {'U', decode_u_type},
+    {'J', decode_j_type},
+    {'B', decode_b_type},
+    {'S', decode_s_type},
+    {'R', decode_r_type},
+    {'I', decode_i_type}
 };
 
 uint32_t extract_bits(uint32_t inst, uint8_t hi, uint8_t lo);
