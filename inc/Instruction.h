@@ -42,3 +42,4 @@ static const std::unordered_map<char, decode_funct> decodeFuncts = {
 
 uint32_t extract_bits(uint32_t inst, uint8_t hi, uint8_t lo);
 int32_t sign_extend(uint32_t val, uint32_t sign_bit);
+uint32_t append_bits(uint32_t a, uint32_t b, uint8_t shamt);

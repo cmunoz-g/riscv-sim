@@ -1,4 +1,5 @@
 #include "ALU.h"
+#include "Instruction.h"
 
 ALU::ALU() {}
 
@@ -11,25 +12,40 @@ inline uint32_t ALU::sub(const uint32_t a, const uint32_t b) {
 }
 
 // Logical operations
-inline uint32_t and_op(const uint32_t a, const uint32_t b) {
+inline uint32_t ALU::and_op(const uint32_t a, const uint32_t b) {
     return a & b;
 }
 
-inline uint32_t or_op(const uint32_t a, const uint32_t b) {
+inline uint32_t ALU::or_op(const uint32_t a, const uint32_t b) {
     return a | b;
 }
 
-inline uint32_t xor_op(const uint32_t a, const uint32_t b) {
+inline uint32_t ALU::xor_op(const uint32_t a, const uint32_t b) {
     return a ^ b;
 }
 
-inline uint32_t not_op(const uint32_t a) {
+inline uint32_t ALU::not_op(const uint32_t a) {
     return ~a;
 }
 
 // Shift operations
-uint32_t sll(const uint32_t a, const uint32_t b);
-uint32_t srl(const uint32_t a, const uint32_t b);
-uint32_t sra(const uint32_t a, const uint32_t b);
-uint32_t slt(const uint32_t a, const uint32_t b);
-uint32_t sltu(const uint32_t a, const uint32_t b);
+inline uint32_t ALU::sll(const uint32_t a, const uint32_t shamt) {
+    return a << (shamt & 0x1F); 
+}
+
+inline uint32_t ALU::srl(const uint32_t a, const uint32_t shamt) {
+    return a >> (shamt & 0x1F);
+}
+
+uint32_t ALU::sra(const uint32_t a, const uint32_t shamt) { // ? Make inline
+    uint32_t shifted = a >> (shamt & 0x1F);
+    sign_extend(shifted, 32 - shamt);
+}
+
+inline uint32_t ALU::slt(const uint32_t a, const uint32_t b) {
+    return static_cast<int32_t>(a) < static_cast<int32_t>(b) ? 1 : 0;
+}
+
+inline uint32_t ALU::sltu(const uint32_t a, const uint32_t b) {
+    return a < b ? 1 : 0;
+}
