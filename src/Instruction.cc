@@ -1,31 +1,5 @@
 #include "Instruction.h"
-#include <optional>
-
-uint32_t extract_bits(uint32_t inst, uint8_t hi, uint8_t lo)
-{
-    if (hi > 31 || lo > 31 || (hi <= lo))
-    {
-        (void)0; // TODO: resolve
-    }
-
-    uint32_t mask{};
-    for (uint8_t i = lo; i < hi; ++i)
-    {
-        mask = mask | (1 << i);
-    }
-    return (inst & mask) >> lo;
-}
-
-uint32_t append_bits(uint32_t a, uint32_t b, uint8_t shamt) {
-    return a | (b << shamt);
-}
-
-int32_t sign_extend(uint32_t val, uint32_t sign_bit)
-{ // TODO: review
-    const uint32_t mask = 1U << (sign_bit - 1);
-    val = val & ((1U << sign_bit) - 1);
-    return (val ^ mask) - mask;
-}
+#include "bit_manipulation.h"
 
 Opcode decode_opcode(uint32_t inst)
 {
@@ -147,4 +121,5 @@ std::optional<Instruction> decode(const uint32_t inst_raw) {
     if (opc_type) {
         return decodeFuncts.at(opc_type)(inst_raw, opc);
     }
+    return std::nullopt;
 }

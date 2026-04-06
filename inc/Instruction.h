@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <unordered_map>
+#include <optional>
 
 enum class Opcode
 {
@@ -29,8 +30,14 @@ struct Instruction
     int32_t imm;
 };
 
-using decode_funct = Instruction (*)(uint32_t, Opcode);
+Instruction decode_r_type(uint32_t inst_raw, Opcode opc);
+Instruction decode_i_type(uint32_t inst_raw, Opcode opc);
+Instruction decode_s_type(uint32_t inst_raw, Opcode opc);
+Instruction decode_b_type(uint32_t inst_raw, Opcode opc);
+Instruction decode_u_type(uint32_t inst_raw, Opcode opc);
+Instruction decode_j_type(uint32_t inst_raw, Opcode opc);
 
+using decode_funct = Instruction (*)(uint32_t, Opcode);
 static const std::unordered_map<char, decode_funct> decodeFuncts = {
     {'U', decode_u_type},
     {'J', decode_j_type},
@@ -40,6 +47,7 @@ static const std::unordered_map<char, decode_funct> decodeFuncts = {
     {'I', decode_i_type}
 };
 
-uint32_t extract_bits(uint32_t inst, uint8_t hi, uint8_t lo);
+uint32_t extract_bits(uint32_t bits, uint8_t hi, uint8_t lo);
 int32_t sign_extend(uint32_t val, uint32_t sign_bit);
 uint32_t append_bits(uint32_t a, uint32_t b, uint8_t shamt);
+std::optional<Instruction> decode(const uint32_t inst_raw);

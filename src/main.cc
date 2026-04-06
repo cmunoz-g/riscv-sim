@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     Memory mem(buf, static_cast<std::size_t>(size)); // inits Memory, copies .bin at base address
     CPU cpu(&mem); // inits CPU registers, holds pointer to memory 
 
-    //cpu.run(); // how are halt/errors handled ? how is logging handled ?
+    cpu.run(); // how are halt/errors handled ? how is logging handled ?
 
     return EXIT_SUCCESS;
 }
