@@ -53,8 +53,21 @@ enum class OpFunct3 {
     AND = 0b111
 };
 
+enum class EcallCodes {
+    PRINT_INTEGER = 1,
+    PRINT_STRING = 4,
+    READ_INTEGER = 5, // ? implement ?
+    READ_STRING = 8, // ? implement ?
+    EXIT = 10,
+    PRINT_CHARACTER = 11,
+    READ_CHARACTER = 12, // ? implement ?
+    EXIT_WITH_CODE = 17
+};
+
 class CPU {
-public:
+    public:
+    static constexpr int a7 = 17; // ? good practice ?
+    static constexpr int a0 = 10; // ? good practice ?
     CPU(Memory *mem);
     uint32_t read_reg(const uint32_t index) const;
     bool write_reg(const uint32_t index, const uint32_t val);
@@ -71,9 +84,21 @@ private:
     bool execute_op_imm(const Instruction &inst);
     bool execute_op(const Instruction &inst);
     bool execute_sys(const Instruction &inst);
+    // todo: marking ecall functions as bool, but not thinking about constraints yet
+    // bool ecall_print_integer();
+    // bool ecall_print_float();
+    bool ecall_print_string();
+    // bool ecall_read_integer();
+    // bool ecall_read_string();
+    // bool ecall_exit();
+    // bool ecall_print_character();
+    // bool ecall_read_character();
+    // bool ecall_exit_with_code();
     bool execute(const Instruction &inst);
 
     std::array<uint32_t, 32> registers_{};
     uint32_t pc_ = 0x0;
     Memory *mem_;
+    bool running_;
+    uint8_t exit_code_;
 };

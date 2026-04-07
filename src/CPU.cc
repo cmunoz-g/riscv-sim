@@ -1,8 +1,9 @@
 #include "CPU.h"
 #include "Instruction.h"
-#include <cstdio>
+#include <cstdio> //todo: remove
+#include <iostream>
 
-CPU::CPU(Memory *mem) : mem_(mem) {}
+CPU::CPU(Memory *mem) : mem_(mem), running_(true), exit_code_(0) {}
 
 // Read / Write
 // ? Need to check bounds in read/write ?
@@ -154,7 +155,29 @@ bool CPU::execute_op(const Instruction &inst) {
 } 
 
 bool CPU::execute_sys(const Instruction &inst) {
-    printf("placeholder");
+    switch (static_cast<EcallCodes>(registers_[a7])) {
+        case EcallCodes::PRINT_INTEGER: std::cout << registers_[a0]; break;
+        case EcallCodes::PRINT_STRING: ecall_print_string(); break;
+        case EcallCodes::EXIT: running_ = false; break;
+        case EcallCodes::PRINT_CHARACTER: {
+            std::cout << static_cast<char>(mem_->read8(registers_[a0])); // ? could fail 
+            break;
+        }
+        case EcallCodes::EXIT_WITH_CODE: {
+            exit_code_ = registers_[a0];
+            running_ = false;
+            break;
+        }
+    }
+    return true;
+}
+
+bool CPU::ecall_print_string() {
+    uint32_t addr = registers_[a0];
+    while (char read_char = static_cast<char>(mem_->read8(addr))) {
+        std::cout << read_char; // todo: fix issue. if returns -1, won't terminate loop
+        addr++;
+    }
     return true;
 }
 
@@ -181,14 +204,18 @@ void CPU::run() {
         uint32_t inst_word = mem_->read32(pc_);
         auto inst = decode(inst_word);
         if (!inst) {
-            printf("error placeholder\n");
+            printf("error placeholder - 1\n");
             return;
         }
         bool status = execute(inst.value()); 
         if (!status) { // ? what does error here mean ? bc it depends on the instruction type
             // ? (i.e.) a branch returning false != error 
-            printf("error placeholder\n");
+            printf("error placeholder - 2\n");
             return;
+        }
+        if (!running_) {
+            printf("exit placeholder (%d)\n", exit_code_);
+            break;
         }
         pc_ = pc_ + 4; // todo: this is not taking into account if last instruction was jump/branch, it should
     }
