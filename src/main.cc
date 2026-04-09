@@ -3,6 +3,8 @@
 #include <fstream>
 #include <cstring>
 #include <filesystem>
+#include <memory>
+#include <vector>
 #include "CPU.h"
 #include "Memory.h"
 
@@ -17,20 +19,17 @@ int main(int argc, char *argv[]) {
     }
     
     auto size = std::filesystem::file_size(argv[1]);
-    uint8_t buf[size];
+    std::vector<uint8_t> buf(size);
     std::fstream file;
     file.open(argv[1], std::ios::in | std::ios::binary);
     if (!file) {
         std::cout << "error: could not open " << argv[1] << std::endl;
         return EXIT_FAILURE;
     }
-    file.read(reinterpret_cast<char *>(buf), size);
+    file.read(reinterpret_cast<char *>(buf.data()), size);
     file.close();
 
-    Memory mem(buf, static_cast<std::size_t>(size)); // inits Memory, copies .bin at base address
-    CPU cpu(&mem); // inits CPU registers, holds pointer to memory 
-
-    cpu.run(); // how are halt/errors handled ? how is logging handled ?
-
-    return EXIT_SUCCESS;
+    CPU cpu(buf.data(), buf.size()); 
+    cpu.run(); 
+    return cpu.exit_code() & 0xFF;
 }

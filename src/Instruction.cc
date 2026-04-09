@@ -3,7 +3,7 @@
 
 Opcode decode_opcode(uint32_t inst)
 {
-    Opcode opcode = static_cast<Opcode>(extract_bits(inst, 7, 0));
+    Opcode opcode = static_cast<Opcode>(extract_bits(inst, 6, 0));
     // Kind of a redundant check, since the compiler won't generate invalid opcodes
     // It's however kept for added sanity (e.g.: to reject corrupted/modified files)
     switch (opcode)
@@ -28,21 +28,21 @@ Opcode decode_opcode(uint32_t inst)
 Instruction decode_r_type(uint32_t inst_raw, Opcode opc) {
     Instruction inst;
     inst.opcode = opc;
-    inst.rd = extract_bits(inst_raw, 12, 7);
-    inst.funct3 = extract_bits(inst_raw, 15, 12);
-    inst.rs1 = extract_bits(inst_raw, 20, 15);
-    inst.rs2 = extract_bits(inst_raw, 25, 20);
-    inst.funct7 = extract_bits(inst_raw, 32, 25);
+    inst.rd = extract_bits(inst_raw, 11, 7);
+    inst.funct3 = extract_bits(inst_raw, 14, 12);
+    inst.rs1 = extract_bits(inst_raw, 19, 15);
+    inst.rs2 = extract_bits(inst_raw, 24, 20);
+    inst.funct7 = extract_bits(inst_raw, 31, 25);
     return inst;
 }
 
 Instruction decode_i_type(uint32_t inst_raw, Opcode opc) {
     Instruction inst;
     inst.opcode = opc;
-    inst.rd = extract_bits(inst_raw, 12, 7);
-    inst.funct3 = extract_bits(inst_raw, 15, 12);
-    inst.rs1 = extract_bits(inst_raw, 20, 15);
-    inst.imm = sign_extend(extract_bits(inst_raw, 32, 20), 11);
+    inst.rd = extract_bits(inst_raw, 11, 7);
+    inst.funct3 = extract_bits(inst_raw, 14, 12);
+    inst.rs1 = extract_bits(inst_raw, 19, 15);
+    inst.imm = sign_extend(extract_bits(inst_raw, 31, 20), 11);
     return inst;
 }
 
@@ -50,13 +50,13 @@ Instruction decode_s_type(uint32_t inst_raw, Opcode opc) {
     Instruction inst;
     inst.opcode = opc;
     
-    uint32_t lower_imm = extract_bits(inst_raw, 12, 7);
-    uint32_t upper_imm = extract_bits(inst_raw, 32, 20);
+    uint32_t lower_imm = extract_bits(inst_raw, 11, 7);
+    uint32_t upper_imm = extract_bits(inst_raw, 31, 20);
     inst.imm = sign_extend(append_bits(lower_imm, upper_imm, 5), 11);
 
-    inst.funct3 = extract_bits(inst_raw, 15, 12);
-    inst.rs1 = extract_bits(inst_raw, 20, 15);
-    inst.rs2 = extract_bits(inst_raw, 25, 20);
+    inst.funct3 = extract_bits(inst_raw, 14, 12);
+    inst.rs1 = extract_bits(inst_raw, 19, 15);
+    inst.rs2 = extract_bits(inst_raw, 24, 20);
     return inst;
 }
 
@@ -64,33 +64,33 @@ Instruction decode_b_type(uint32_t inst_raw, Opcode opc) {
     Instruction inst;
     inst.opcode = opc;
     
-    uint32_t bits_1_to_4_imm = extract_bits(inst_raw, 12, 8);
-    uint32_t bits_5_to_10_imm = extract_bits(inst_raw, 31, 25);
+    uint32_t bits_1_to_4_imm = extract_bits(inst_raw, 11, 8);
+    uint32_t bits_5_to_10_imm = extract_bits(inst_raw, 30, 25);
     uint32_t bits_11_12_imm = (inst_raw >> 7) | (inst_raw >> 31);
     uint32_t bits_1_to_10_imm = append_bits(bits_1_to_4_imm, bits_5_to_10_imm, 4);
     inst.imm = sign_extend(append_bits(bits_1_to_10_imm, bits_11_12_imm, 10), 12);
 
-    inst.funct3 = extract_bits(inst_raw, 15, 12);
-    inst.rs1 = extract_bits(inst_raw, 20, 15);
-    inst.rs2 = extract_bits(inst_raw, 25, 20);
+    inst.funct3 = extract_bits(inst_raw, 14, 12);
+    inst.rs1 = extract_bits(inst_raw, 19, 15);
+    inst.rs2 = extract_bits(inst_raw, 24, 20);
     return inst;
 }
 
 Instruction decode_u_type(uint32_t inst_raw, Opcode opc) {
     Instruction inst;
     inst.opcode = opc;
-    inst.rd = extract_bits(inst_raw, 12, 7);
-    inst.imm = extract_bits(inst_raw, 32, 12); //todo: forgot if this should be sign extended, review
+    inst.rd = extract_bits(inst_raw, 11, 7);
+    inst.imm = extract_bits(inst_raw, 31, 12);
     return inst;
 }
 
 Instruction decode_j_type(uint32_t inst_raw, Opcode opc) {
     Instruction inst;
     inst.opcode = opc;
-    inst.rd = extract_bits(inst_raw, 12, 7);
+    inst.rd = extract_bits(inst_raw, 11, 7);
     
-    uint32_t bits_1_to_11_imm = extract_bits(inst_raw, 31, 21) | (inst_raw >> 10);
-    uint32_t bits_12_to_20_imm = extract_bits(inst_raw, 20, 12) | (inst_raw >> 23);
+    uint32_t bits_1_to_11_imm = extract_bits(inst_raw, 30, 21) | (inst_raw >> 10);
+    uint32_t bits_12_to_20_imm = extract_bits(inst_raw, 19, 12) | (inst_raw >> 23);
 
     inst.imm = sign_extend(append_bits(bits_1_to_11_imm, bits_12_to_20_imm, 10), 20);
     return inst;

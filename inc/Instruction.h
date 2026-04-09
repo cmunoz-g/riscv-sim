@@ -30,6 +30,60 @@ struct Instruction
     int32_t imm;
 };
 
+enum class BranchFunct3 {
+    BEQ = 0b000,
+    BNE = 0b001,
+    BLT = 0b100,
+    BGE = 0b101,
+    BLTU = 0b110,
+    BGEU = 0b111
+};
+
+enum class LoadFunct3 {
+    LB = 0b000,
+    LH = 0b001,
+    LW = 0b010,
+    LBU = 0b100,
+    LHU = 0b101
+};
+
+enum class StoreFunct3 {
+    SB = 0b000,
+    SH = 0b001,
+    SW = 0b010
+};
+
+enum class OpImmFunct3 {
+    ADDI = 0b000,
+    SLTI = 0b010,
+    SLTIU = 0b011,
+    XORI = 0b100,
+    ORI = 0b110,
+    ANDI = 0b111,
+    SLLI = 0b001,
+    SRLI_SRAI = 0b101
+};
+
+enum class OpFunct3 {
+    ADD_SUB = 0b000,
+    SLL = 0b001,
+    SLT = 0b010,
+    SLTU = 0b011,
+    XOR = 0b100,
+    SRL_SRA = 0b101,
+    OR = 0b110,
+    AND = 0b111
+};
+
+enum class EcallCodes {
+    // Scope of the project is correct fetching, decoding and executing of instructions, so only a few ecalls are included
+    PRINT_INTEGER = 1,
+    PRINT_STRING = 4,
+    EXIT = 10,
+    PRINT_CHARACTER = 11,
+    EXIT_WITH_CODE = 17
+};
+
 Instruction decode_r_type(uint32_t inst_raw, Opcode opc);
 Instruction decode_i_type(uint32_t inst_raw, Opcode opc);
 Instruction decode_s_type(uint32_t inst_raw, Opcode opc);
@@ -47,7 +101,4 @@ static const std::unordered_map<char, decode_funct> decodeFuncts = {
     {'I', decode_i_type}
 };
 
-uint32_t extract_bits(uint32_t bits, uint8_t hi, uint8_t lo);
-int32_t sign_extend(uint32_t val, uint32_t sign_bit);
-uint32_t append_bits(uint32_t a, uint32_t b, uint8_t shamt);
 std::optional<Instruction> decode(const uint32_t inst_raw);
