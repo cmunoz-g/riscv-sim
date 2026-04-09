@@ -216,7 +216,7 @@ bool CPU::ecall_print_string() {
     bool read_res = false;
     uint8_t val{};
 
-    while (read_res = mem_.read8(addr, val) && val != 0) {
+    while ((read_res = mem_.read8(addr, val)) && val != 0) {
         std::cout << static_cast<char>(val);
         addr++;
     }
@@ -277,7 +277,6 @@ void CPU::run() {
             return;
         }
         if (!running_) {
-            printf("exit placeholder (%d)\n", exit_code_);
             break;
         }
         pc_ = branched_ ? branch_target_ : pc_ + 4;
