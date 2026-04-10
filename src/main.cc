@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
         std::cout << "error: file must be .bin" << std::endl;
         return EXIT_FAILURE;
     }
-    
+    //todo: add try catch
     auto size = std::filesystem::file_size(argv[1]);
     std::vector<uint8_t> buf(size);
     std::fstream file;

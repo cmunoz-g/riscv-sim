@@ -1,5 +1,5 @@
 .data
-hello: .asciz "Hello world!"
+hello: .asciz "Hello world!\n"
 
 .text
 main:
