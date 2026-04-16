@@ -201,6 +201,7 @@ bool CPU::execute_sys(const Instruction &inst) {
                 return false;
             }
             std::cout << static_cast<char>(val);
+            break;
         }
         case EcallCodes::EXIT_WITH_CODE: {
             exit_code_ = registers_[a0];
@@ -254,7 +255,7 @@ bool CPU::execute(const Instruction &inst) {
 }
 
 uint32_t CPU::exit_code() {
-    LOG_INFO("program finished execution: exit_code=%d\n", exit_code_);
+    // LOG_INFO("program finished execution: exit_code=%d\n", exit_code_);
     return exit_code_;
 }
 
