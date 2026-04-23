@@ -6,7 +6,7 @@ uint32_t extract_bits(uint32_t bits, uint8_t hi, uint8_t lo) {
     assert(hi < 32 && lo < 32 && hi >= lo);      
     uint32_t mask{};
     for (uint8_t i = lo; i <= hi; ++i) {
-        mask = mask | (1 << i);
+        mask = mask | (1u << i);
     }
     return (bits & mask) >> lo;
 }

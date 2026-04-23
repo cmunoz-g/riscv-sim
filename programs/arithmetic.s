@@ -18,9 +18,9 @@ _start:
     # AND, OR, XOR
     addi x5, x0, 0xFF
     addi x6, x0, 0x0F
-    and x7, x5, x6 # 0x0F
-    or x8, x5, x6 # 0xFF
-    xor x9, x5, x6 # 0xF0
+    and x7, x5, x6 # 0x0F - 15
+    or x8, x5, x6 # 0xFF - 255
+    xor x9, x5, x6 # 0xF0 - 240
 
     mv a0, x7
     addi a7, zero, 1
@@ -33,17 +33,17 @@ _start:
     ecall
 
     # ANDI, ORI, XORI
-    andi x10, x5, 0x0F # 0x0F
-    ori x11, x6, 0xF0 # 0xFF
-    xori x12, x5, 0xFF # 0x00
+    andi x10, x5, 0x0F # 0x0F - 15
+    ori x11, x6, 0xF0 # 0xFF - 255
+    xori x12, x5, 0xFF # 0x00 - 0
 
-    mv   a0, x14
+    mv   a0, x10
     addi a7, zero, 1
     ecall
-    mv   a0, x15
+    mv   a0, x11
     addi a7, zero, 1
     ecall
-    mv   a0, x17
+    mv   a0, x12
     addi a7, zero, 1
     ecall
 

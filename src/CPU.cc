@@ -171,19 +171,22 @@ bool CPU::execute_op(const Instruction &inst) {
 
     switch (static_cast<OpFunct3>(inst.funct3)) {
         case OpFunct3::ADD_SUB: {
-            uint32_t funct7 = extract_bits(inst.imm, 30, 30);
-            val_to_write = (funct7 == 0) ? rs1_val + rs2_val : rs1_val - rs2_val;
+            uint32_t alt_op = extract_bits(inst.funct7, 5, 5);
+            val_to_write = (alt_op == 0) ? (rs1_val + rs2_val) : (rs1_val - rs2_val);
             break;
         }
         case OpFunct3::SLL: val_to_write = sll(rs1_val, rs2_val); break;
         case OpFunct3::SLT: val_to_write = (static_cast<int32_t>(rs1_val) < static_cast<int32_t>(rs2_val)); break;
         case OpFunct3::SLTU: val_to_write = (rs1_val < rs2_val); break;
         case OpFunct3::SRL_SRA: {
-            uint32_t val_to_write = inst.funct7 == 0 ? srl(rs1_val, rs2_val) : sra(rs1_val, rs2_val);
-            val_to_write = val_to_write;
+            uint32_t alt_op = extract_bits(inst.funct7, 5, 5);
+            uint32_t val_to_write = (alt_op == 0) ? srl(rs1_val, rs2_val) : sra(rs1_val, rs2_val);
+            //val_to_write = val_to_write;
             break;
         }
-        case OpFunct3::XOR: val_to_write = inst.rs1 ^ inst.rs2; break;
+        case OpFunct3::XOR: val_to_write = rs1_val ^ rs2_val; break;
+        case OpFunct3::OR: val_to_write = rs1_val | rs2_val; break;
+        case OpFunct3::AND: val_to_write = rs1_val & rs2_val; break;
     }
     write_reg(inst.rd, val_to_write);
     return true;
