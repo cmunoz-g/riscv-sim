@@ -63,13 +63,15 @@ Instruction decode_s_type(uint32_t inst_raw, Opcode opc) {
 Instruction decode_b_type(uint32_t inst_raw, Opcode opc) {
     Instruction inst;
     inst.opcode = opc;
-    
-    uint32_t bits_1_to_4_imm = extract_bits(inst_raw, 11, 8);
-    uint32_t bits_5_to_10_imm = extract_bits(inst_raw, 30, 25);
-    uint32_t bits_11_12_imm = (inst_raw >> 7) | (inst_raw >> 31);
-    uint32_t bits_1_to_10_imm = append_bits(bits_1_to_4_imm, bits_5_to_10_imm, 4);
-    inst.imm = sign_extend(append_bits(bits_1_to_10_imm, bits_11_12_imm, 10), 12);
 
+    uint32_t bit_12 = extract_bits(inst_raw, 7, 7);
+    uint32_t bits_1_4 = extract_bits(inst_raw, 11, 8);
+    uint32_t bits_5_10 = extract_bits(inst_raw, 30, 25);
+    uint32_t bit_11 = extract_bits(inst_raw, 31, 31);
+    uint32_t imm_not_extended = (bit_12 << 12) | (bit_11 << 11)
+        | (bits_5_10 << 5) | (bits_1_4 << 1);
+    inst.imm = sign_extend(imm_not_extended, 13);
+    
     inst.funct3 = extract_bits(inst_raw, 14, 12);
     inst.rs1 = extract_bits(inst_raw, 19, 15);
     inst.rs2 = extract_bits(inst_raw, 24, 20);
@@ -88,11 +90,15 @@ Instruction decode_j_type(uint32_t inst_raw, Opcode opc) {
     Instruction inst;
     inst.opcode = opc;
     inst.rd = extract_bits(inst_raw, 11, 7);
-    
-    uint32_t bits_1_to_11_imm = extract_bits(inst_raw, 30, 21) | (inst_raw >> 10);
-    uint32_t bits_12_to_20_imm = extract_bits(inst_raw, 19, 12) | (inst_raw >> 23);
 
-    inst.imm = sign_extend(append_bits(bits_1_to_11_imm, bits_12_to_20_imm, 10), 20);
+    uint32_t bits_12_19 = extract_bits(inst_raw, 19, 12);
+    uint32_t bit_11 = extract_bits(inst_raw, 20, 20);
+    uint32_t bits_1_10 = extract_bits(inst_raw, 21, 30);
+    uint32_t bit_20 = extract_bits(inst_raw, 31, 31);
+    uint32_t imm_not_extended = (bit_20 << 20) | (bits_12_19 << 12)
+        | (bit_11 << 11) | (bits_1_10 << 1);
+
+    inst.imm = sign_extend(imm_not_extended, 21);
     return inst;
 }
 

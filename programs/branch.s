@@ -6,7 +6,7 @@ _start:
     addi x3, x0, 10
     addi x4, x0, -3
 
-    # BEQ, should branch
+    # # BEQ, should branch
     beq  x1, x2, beq_pass
     addi a0, zero, 0
     addi a7, zero, 1
@@ -22,7 +22,7 @@ beq_pass:
     addi a7, zero, 1
     ecall
 bne_pass:
-    addi a0, zero, 1
+    addi a0, zero, 2
     addi a7, zero, 1
     ecall
 
@@ -32,7 +32,7 @@ bne_pass:
     addi a7, zero, 1
     ecall
 blt_pass:
-    addi a0, zero, 1
+    addi a0, zero, 3
     addi a7, zero, 1
     ecall
 
@@ -42,29 +42,28 @@ blt_pass:
     addi a7, zero, 1
     ecall
 bge_pass:
-    addi a0, zero, 1
+    addi a0, zero, 4
     addi a7, zero, 1
     ecall
 
-    # BLTU unsigned — 5 < 0xFFFFFFFD? no. should NOT branch
-    bltu x1, x4, bltu_fail
-    addi a0, zero, 1
+    # BLTU unsigned — 0xFFFFFFFD < 5? no. should NOT branch
+    bltu x4, x1, bltu_fail
+    addi a0, zero, 5
     addi a7, zero, 1
     ecall
-    j    bltu_done
+    j bltu_done
 bltu_fail:
     addi a0, zero, 0
     addi a7, zero, 1
     ecall
 bltu_done:
-
-    # BGEU unsigned — 0xFFFFFFFD >= 5, should branch
+    BGEU unsigned — 0xFFFFFFFD >= 5, should branch
     bgeu x4, x1, bgeu_pass
     addi a0, zero, 0
     addi a7, zero, 1
     ecall
 bgeu_pass:
-    addi a0, zero, 1
+    addi a0, zero, 6
     addi a7, zero, 1
     ecall
 

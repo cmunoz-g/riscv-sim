@@ -181,7 +181,6 @@ bool CPU::execute_op(const Instruction &inst) {
         case OpFunct3::SRL_SRA: {
             uint32_t alt_op = extract_bits(inst.funct7, 5, 5);
             uint32_t val_to_write = (alt_op == 0) ? srl(rs1_val, rs2_val) : sra(rs1_val, rs2_val);
-            //val_to_write = val_to_write;
             break;
         }
         case OpFunct3::XOR: val_to_write = rs1_val ^ rs2_val; break;
@@ -284,5 +283,8 @@ void CPU::run() {
             break;
         }
         pc_ = branched_ ? branch_target_ : pc_ + 4;
+        branched_ = false;
     }
 }
+
+// 100000000 10001 0010011
