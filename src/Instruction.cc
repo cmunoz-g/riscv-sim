@@ -93,7 +93,7 @@ Instruction decode_j_type(uint32_t inst_raw, Opcode opc) {
 
     uint32_t bits_12_19 = extract_bits(inst_raw, 19, 12);
     uint32_t bit_11 = extract_bits(inst_raw, 20, 20);
-    uint32_t bits_1_10 = extract_bits(inst_raw, 21, 30);
+    uint32_t bits_1_10 = extract_bits(inst_raw, 30, 21);
     uint32_t bit_20 = extract_bits(inst_raw, 31, 31);
     uint32_t imm_not_extended = (bit_20 << 20) | (bits_12_19 << 12)
         | (bit_11 << 11) | (bits_1_10 << 1);

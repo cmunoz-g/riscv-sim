@@ -57,7 +57,7 @@ bltu_fail:
     addi a7, zero, 1
     ecall
 bltu_done:
-    BGEU unsigned — 0xFFFFFFFD >= 5, should branch
+    #BGEU unsigned — 0xFFFFFFFD >= 5, should branch
     bgeu x4, x1, bgeu_pass
     addi a0, zero, 0
     addi a7, zero, 1

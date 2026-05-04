@@ -197,12 +197,7 @@ bool CPU::execute_sys(const Instruction &inst) {
         case EcallCodes::PRINT_STRING: return ecall_print_string();
         case EcallCodes::EXIT: running_ = false; break;
         case EcallCodes::PRINT_CHARACTER: {
-            uint8_t val{};
-            if (!mem_.read8(registers_[a0], val)) {
-                err_addr_ = registers_[a0];
-                return false;
-            }
-            std::cout << static_cast<char>(val);
+            std::cout << static_cast<char>(registers_[a0]);
             break;
         }
         case EcallCodes::EXIT_WITH_CODE: {
