@@ -73,7 +73,7 @@ bool CPU::execute_branch(const Instruction &inst) {
 }
 
 bool CPU::execute_load(const Instruction &inst) {
-    uint32_t addr = inst.rs1 + inst.imm;
+    uint32_t addr = read_reg(inst.rs1) + inst.imm;
     uint32_t val{};
     bool read_res = false;
 
@@ -115,7 +115,7 @@ bool CPU::execute_load(const Instruction &inst) {
 }
 
 bool CPU::execute_store(const Instruction &inst) {
-    uint32_t addr = inst.rs1 + inst.imm;
+    uint32_t addr = read_reg(inst.rs1) + inst.imm;
     uint32_t rs2_val = read_reg(inst.rs2);
     bool write_res = false;
 
@@ -193,7 +193,7 @@ bool CPU::execute_op(const Instruction &inst) {
 
 bool CPU::execute_sys(const Instruction &inst) {
     switch (static_cast<EcallCodes>(registers_[a7])) {
-        case EcallCodes::PRINT_INTEGER: std::cout << registers_[a0]; break;
+        case EcallCodes::PRINT_INTEGER: std::cout << static_cast<int32_t>(registers_[a0]); break;
         case EcallCodes::PRINT_STRING: return ecall_print_string();
         case EcallCodes::EXIT: running_ = false; break;
         case EcallCodes::PRINT_CHARACTER: {
@@ -281,5 +281,3 @@ void CPU::run() {
         branched_ = false;
     }
 }
-
-// 100000000 10001 0010011

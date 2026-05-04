@@ -51,7 +51,7 @@ Instruction decode_s_type(uint32_t inst_raw, Opcode opc) {
     inst.opcode = opc;
     
     uint32_t lower_imm = extract_bits(inst_raw, 11, 7);
-    uint32_t upper_imm = extract_bits(inst_raw, 31, 20);
+    uint32_t upper_imm = extract_bits(inst_raw, 31, 25);
     inst.imm = sign_extend(append_bits(lower_imm, upper_imm, 5), 11);
 
     inst.funct3 = extract_bits(inst_raw, 14, 12);
