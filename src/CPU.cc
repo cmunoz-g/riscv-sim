@@ -48,7 +48,7 @@ bool CPU::execute_jalr(const Instruction &inst) {
     // of the result to zero. The address of the instruction following the jump (pc+4) is written to register rd.
     uint32_t return_addr = pc_ + 4;
     branched_ = true;
-    branch_target_ = (inst.rs1 + inst.imm) & ~1;
+    branch_target_ = (read_reg(inst.rs1) + inst.imm) & ~1;
     write_reg(inst.rd, return_addr);
     return true;
 }

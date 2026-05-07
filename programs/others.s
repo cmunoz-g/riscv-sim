@@ -2,7 +2,7 @@
 .globl _start
 _start:
     # LUI
-    lui  x1, 0xDEADB
+    lui  x1, 0xFFFFF
     mv   a0, x1
     addi a7, zero, 1
     ecall

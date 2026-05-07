@@ -19,7 +19,7 @@ bool Memory::read16(const uint32_t addr, uint16_t &val) const {
     if (addr > (kMemSize - sizeof(uint16_t))) {
         return false;
     }
-    val = mem_[addr] | (mem_[addr + 1] << 8);
+    val = mem_[addr] | (mem_[addr + 2] << 8);
     return true;
 }
 

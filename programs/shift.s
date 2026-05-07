@@ -10,32 +10,53 @@ _start:
     mv   a0, x2
     addi a7, zero, 1
     ecall
+    li a0, '\n'
+    li a7, 11
+    ecall
     mv   a0, x4
     addi a7, zero, 1
     ecall
+    li a0, '\n'
+    li a7, 11
+    ecall
     mv   a0, x5
     addi a7, zero, 1
+    ecall
+    li a0, '\n'
+    li a7, 11
     ecall
 
     # SLT, SLTU, SLTI, SLTIU
     addi x6, x0, -5
     addi x7, x0, 3
-    slt  x8, x6, x7 # 1 (signed: -5 < 3)
-    sltu x9, x6, x7 # 0 (unsigned: big > 3)
-    slti x10, x6, 0 # 1 (-5 < 0)
-    sltiu x11, x6, 3 # 0 (unsigned big > 3)
+    slt  x8, x6, x7 # 1
+    sltu x9, x6, x7 # 0 
+    slti x10, x6, 0 # 1
+    sltiu x11, x6, 3 # 0 
 
     mv   a0, x8
     addi a7, zero, 1
     ecall
+    li a0, '\n'
+    li a7, 11
+    ecall
     mv   a0, x9
     addi a7, zero, 1
+    ecall
+    li a0, '\n'
+    li a7, 11
     ecall
     mv   a0, x10
     addi a7, zero, 1
     ecall
+    li a0, '\n'
+    li a7, 11
+    ecall
     mv   a0, x11
     addi a7, zero, 1
+    ecall
+    li a0, '\n'
+    li a7, 11
     ecall
 
     # SLL, SRL, SRA
@@ -49,11 +70,20 @@ _start:
     mv   a0, x14
     addi a7, zero, 1
     ecall
+    li a0, '\n'
+    li a7, 11
+    ecall
     mv   a0, x15
     addi a7, zero, 1
     ecall
+    li a0, '\n'
+    li a7, 11
+    ecall
     mv   a0, x17
     addi a7, zero, 1
+    ecall
+    li a0, '\n'
+    li a7, 11
     ecall
 
     addi a7, zero, 10
