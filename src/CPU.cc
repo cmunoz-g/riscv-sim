@@ -180,7 +180,7 @@ bool CPU::execute_op(const Instruction &inst) {
         case OpFunct3::SLTU: val_to_write = (rs1_val < rs2_val); break;
         case OpFunct3::SRL_SRA: {
             uint32_t alt_op = extract_bits(inst.funct7, 5, 5);
-            uint32_t val_to_write = (alt_op == 0) ? srl(rs1_val, rs2_val) : sra(rs1_val, rs2_val);
+            val_to_write = (alt_op == 0) ? srl(rs1_val, rs2_val) : sra(rs1_val, rs2_val);
             break;
         }
         case OpFunct3::XOR: val_to_write = rs1_val ^ rs2_val; break;
