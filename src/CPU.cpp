@@ -1,7 +1,9 @@
 #include "CPU.h"
+
 #include <cassert>
 #include <iostream>
 #include <memory>
+
 #include "Instruction.h"
 #include "fatal_error.h"
 

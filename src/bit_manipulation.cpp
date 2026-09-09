@@ -1,4 +1,5 @@
 #include "bit_manipulation.h"
+
 #include <cassert>
 #include <cstdio>
 

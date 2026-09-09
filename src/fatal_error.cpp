@@ -1,4 +1,5 @@
 #include "fatal_error.h"
+
 #include <cstdlib>
 #include <iostream>
 

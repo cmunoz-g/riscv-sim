@@ -1,4 +1,5 @@
 #include "Instruction.h"
+
 #include "bit_manipulation.h"
 
 namespace riscvsim
