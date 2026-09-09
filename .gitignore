@@ -1,5 +1,4 @@
 .vscode
 todo
 build
-programs/*.bin
-to-test-tmp.txt
+examples/*.bin
