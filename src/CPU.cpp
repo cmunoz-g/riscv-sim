@@ -204,7 +204,7 @@ void CPU::execute_op_imm(const Instruction& instruction)
         case OpImmFunct3::SRLI_SRAI:
         {
             const uint32_t shamt{extract_bits(instruction.imm, 4, 0)};
-            const uint32_t funct7{extract_bits(instruction.imm, 30, 30)};
+            const uint32_t funct7{extract_bits(instruction.imm, 10, 10)};
             const uint32_t shifted_value{(funct7 == 0) ? srl(rs1_value, shamt)
                                                        : sra(rs1_value, shamt)};
             value_to_write = shifted_value;

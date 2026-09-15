@@ -25,10 +25,10 @@ namespace riscvsim
 }
 
 [[nodiscard]] int32_t sign_extend(uint32_t value,
-                                  const uint32_t bit_width) noexcept
+                                  const uint32_t num_bits) noexcept
 {
-    const uint32_t mask{1U << (bit_width - 1)};
-    value = value & ((1U << bit_width) - 1);
+    const uint32_t mask{1U << (num_bits - 1)};
+    value = value & ((1U << num_bits) - 1);
     return (value ^ mask) - mask;
 }
 

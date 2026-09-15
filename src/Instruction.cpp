@@ -48,7 +48,7 @@ namespace riscvsim
     instruction.rd = extract_bits(inst_raw, 11, 7);
     instruction.funct3 = extract_bits(inst_raw, 14, 12);
     instruction.rs1 = extract_bits(inst_raw, 19, 15);
-    instruction.imm = sign_extend(extract_bits(inst_raw, 31, 20), 11);
+    instruction.imm = sign_extend(extract_bits(inst_raw, 31, 20), 12);
     return instruction;
 }
 
